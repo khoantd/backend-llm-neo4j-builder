@@ -305,7 +305,7 @@ Note: This system does not generate answers based solely on internal knowledge. 
 QUESTION_TRANSFORM_TEMPLATE = "Given the below conversation, generate a search query to look up in order to get information relevant to the conversation. Only respond with the query, nothing else." 
 
 ## CHAT QUERIES
-VECTOR_SEARCH_TOP_K = 5
+VECTOR_SEARCH_TOP_K = 10
 
 VECTOR_SEARCH_QUERY = """
 WITH node AS chunk, score
@@ -513,7 +513,7 @@ VECTOR_GRAPH_SEARCH_QUERY = VECTOR_GRAPH_SEARCH_QUERY_PREFIX+ VECTOR_GRAPH_SEARC
 ) + VECTOR_GRAPH_SEARCH_QUERY_SUFFIX
 
 ### Local community search
-LOCAL_COMMUNITY_TOP_K = 10
+LOCAL_COMMUNITY_TOP_K = 20
 LOCAL_COMMUNITY_TOP_CHUNKS = 3
 LOCAL_COMMUNITY_TOP_COMMUNITIES = 3
 LOCAL_COMMUNITY_TOP_OUTSIDE_RELS = 10
