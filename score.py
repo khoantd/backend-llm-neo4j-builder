@@ -1095,5 +1095,61 @@ async def get_schema_visualization(uri=Form(None), userName=Form(None), password
     finally:
         gc.collect()
 
+@app.post("/search_context")
+async def search_context(
+    query: str = Form(),
+    uri: str = Form(None),
+    database: str = Form(None),
+    userName: str = Form(None),
+    password: str = Form(None),
+    document_names: str = Form(None),
+    mode: str = Form("vector"),
+    top_k: int = Form(None),
+    score_threshold: float = Form(None),
+    email: Form(None)
+):
+    """
+    Search for context only based on the query.
+    This endpoint reuses existing search functionality but returns only the context without any additional processing.
+    """
+    try:
+        # Initialize Neo4j connection
+        graph = graphDBdataAccess(uri, userName, password, database)
+        
+        # Get chat mode settings
+        chat_mode_settings = get_chat_mode_settings(mode)
+        
+        # Override top_k if provided
+        if top_k is not None:
+            chat_mode_settings["top_k"] = top_k
+            
+        # Override score threshold if provided
+        if score_threshold is not None:
+            chat_mode_settings["score_threshold"] = score_threshold
+            
+        # Get retriever
+        retriever = get_neo4j_retriever(
+            graph, 
+            document_names, 
+            chat_mode_settings,
+            score_threshold=score_threshold if score_threshold else CHAT_SEARCH_KWARG_SCORE_THRESHOLD
+        )
+        
+        # Get documents
+        docs = retriever.get_relevant_documents(query)
+        
+        # Format the response
+        response = {
+            "context": [doc.page_content for doc in docs],
+            "metadata": [doc.metadata for doc in docs],
+            "scores": [doc.metadata.get("score", 0.0) for doc in docs]
+        }
+        
+        return create_api_response(True, "Context retrieved successfully", response)
+        
+    except Exception as e:
+        logging.error(f"Error in search_context: {str(e)}")
+        return create_api_response(False, f"Error retrieving context: {str(e)}", None)
+
 if __name__ == "__main__":
     uvicorn.run(app)

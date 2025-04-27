@@ -6,10 +6,10 @@
     },
     "item": [
       {
-        "name": "Document Processing",
+        "name": "Core APIs",
         "item": [
           {
-            "name": "Process Local File",
+            "name": "Chat Bot",
             "request": {
               "method": "POST",
               "header": [
@@ -19,18 +19,18 @@
                 }
               ],
               "url": {
-                "raw": "{{base_url}}/process/local",
+                "raw": "{{base_url}}/chat_bot",
                 "host": ["{{base_url}}"],
-                "path": ["process", "local"]
+                "path": ["chat_bot"]
               },
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"model\": \"gpt-4\",\n  \"merged_file_path\": \"/data/documents/Annual_Report_2023.pdf\",\n  \"fileName\": \"Annual_Report_2023.pdf\",\n  \"allowedNodes\": [\"Person\", \"Organization\", \"Location\", \"Event\", \"Technology\"],\n  \"allowedRelationship\": [\"WORKS_FOR\", \"LOCATED_IN\", \"PARTICIPATED_IN\", \"USES\"],\n  \"token_chunk_size\": 1000,\n  \"chunk_overlap\": 200,\n  \"chunks_to_combine\": 3,\n  \"retry_condition\": \"max_retries\",\n  \"additional_instructions\": \"Extract key entities and relationships from the annual report\"\n}"
+                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"model\": \"gpt-4\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"question\": \"What are the key findings in the report?\",\n  \"document_names\": [\"Annual_Report_2023.pdf\"],\n  \"session_id\": \"session_123\",\n  \"mode\": \"vector\",\n  \"email\": \"user@example.com\"\n}"
               }
             }
           },
           {
-            "name": "Process S3 File",
+            "name": "Search Context",
             "request": {
               "method": "POST",
               "header": [
@@ -40,18 +40,18 @@
                 }
               ],
               "url": {
-                "raw": "{{base_url}}/process/s3",
+                "raw": "{{base_url}}/search_context",
                 "host": ["{{base_url}}"],
-                "path": ["process", "s3"]
+                "path": ["search_context"]
               },
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"model\": \"gpt-4\",\n  \"source_url\": \"s3://company-documents/2023/\",\n  \"aws_access_key_id\": \"AKIAXXXXXXXXXXXXXXXX\",\n  \"aws_secret_access_key\": \"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\n  \"file_name\": \"Q4_Financial_Report.pdf\",\n  \"allowedNodes\": [\"Person\", \"Organization\", \"FinancialMetric\", \"Quarter\"],\n  \"allowedRelationship\": [\"REPORTED\", \"BELONGS_TO\", \"MEASURED_IN\"],\n  \"token_chunk_size\": 1000,\n  \"chunk_overlap\": 200,\n  \"chunks_to_combine\": 3,\n  \"retry_condition\": \"max_retries\",\n  \"additional_instructions\": \"Extract financial metrics and relationships\"\n}"
+                "raw": "{\n  \"query\": \"financial performance\",\n  \"uri\": \"bolt://localhost:7687\",\n  \"database\": \"neo4j\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"document_names\": [\"Annual_Report_2023.pdf\"],\n  \"mode\": \"vector\",\n  \"top_k\": 5,\n  \"score_threshold\": 0.7,\n  \"email\": \"user@example.com\"\n}"
               }
             }
           },
           {
-            "name": "Process Web Page",
+            "name": "Graph Query",
             "request": {
               "method": "POST",
               "header": [
@@ -61,86 +61,95 @@
                 }
               ],
               "url": {
-                "raw": "{{base_url}}/process/web",
+                "raw": "{{base_url}}/graph_query",
                 "host": ["{{base_url}}"],
-                "path": ["process", "web"]
+                "path": ["graph_query"]
               },
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"model\": \"gpt-4\",\n  \"source_url\": \"https://www.company.com/news/press-release-2023\",\n  \"file_name\": \"Press_Release_2023\",\n  \"allowedNodes\": [\"Person\", \"Organization\", \"Event\", \"Product\"],\n  \"allowedRelationship\": [\"ANNOUNCED\", \"DEVELOPED\", \"PARTICIPATED_IN\"],\n  \"token_chunk_size\": 1000,\n  \"chunk_overlap\": 200,\n  \"chunks_to_combine\": 3,\n  \"retry_condition\": \"max_retries\",\n  \"additional_instructions\": \"Extract key announcements and relationships\"\n}"
-              }
-            }
-          },
-          {
-            "name": "Process YouTube Video",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/process/youtube",
-                "host": ["{{base_url}}"],
-                "path": ["process", "youtube"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"model\": \"gpt-4\",\n  \"source_url\": \"https://www.youtube.com/watch?v=VIDEO_ID\",\n  \"file_name\": \"youtube_video\",\n  \"allowedNodes\": [\"Person\", \"Organization\", \"Location\"],\n  \"allowedRelationship\": [\"WORKS_FOR\", \"LOCATED_IN\"],\n  \"token_chunk_size\": 1000,\n  \"chunk_overlap\": 200,\n  \"chunks_to_combine\": 3,\n  \"retry_condition\": \"max_retries\",\n  \"additional_instructions\": \"Extract entities and relationships from video content\"\n}"
-              }
-            }
-          },
-          {
-            "name": "Process Wikipedia Article",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/process/wikipedia",
-                "host": ["{{base_url}}"],
-                "path": ["process", "wikipedia"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"model\": \"gpt-4\",\n  \"wiki_query\": \"Artificial Intelligence\",\n  \"language\": \"en\",\n  \"file_name\": \"wikipedia_article\",\n  \"allowedNodes\": [\"Person\", \"Organization\", \"Location\", \"Technology\"],\n  \"allowedRelationship\": [\"DEVELOPED\", \"INVENTED\", \"BASED_IN\"],\n  \"token_chunk_size\": 1000,\n  \"chunk_overlap\": 200,\n  \"chunks_to_combine\": 3,\n  \"retry_condition\": \"max_retries\",\n  \"additional_instructions\": \"Extract key concepts and historical information\"\n}"
-              }
-            }
-          },
-          {
-            "name": "Process GCS File",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/process/gcs",
-                "host": ["{{base_url}}"],
-                "path": ["process", "gcs"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"model\": \"gpt-4\",\n  \"gcs_project_id\": \"your-project-id\",\n  \"gcs_bucket_name\": \"your-bucket-name\",\n  \"gcs_bucket_folder\": \"folder-path\",\n  \"gcs_blob_filename\": \"document.pdf\",\n  \"access_token\": \"YOUR_GCS_ACCESS_TOKEN\",\n  \"file_name\": \"document.pdf\",\n  \"allowedNodes\": [\"Person\", \"Organization\", \"Location\"],\n  \"allowedRelationship\": [\"WORKS_FOR\", \"LOCATED_IN\"],\n  \"token_chunk_size\": 1000,\n  \"chunk_overlap\": 200,\n  \"chunks_to_combine\": 3,\n  \"retry_condition\": \"max_retries\",\n  \"additional_instructions\": \"Extract entities and relationships\"\n}"
+                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"database\": \"neo4j\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"document_names\": [\"Annual_Report_2023.pdf\"],\n  \"email\": \"user@example.com\"\n}"
               }
             }
           }
         ]
       },
       {
-        "name": "Graph Operations",
+        "name": "Document Management",
         "item": [
           {
-            "name": "Get Source List",
+            "name": "Upload",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "multipart/form-data"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/upload",
+                "host": ["{{base_url}}"],
+                "path": ["upload"]
+              },
+              "body": {
+                "mode": "formdata",
+                "formdata": [
+                  {
+                    "key": "file",
+                    "type": "file",
+                    "src": []
+                  },
+                  {
+                    "key": "chunkNumber",
+                    "value": "1",
+                    "type": "text"
+                  },
+                  {
+                    "key": "totalChunks",
+                    "value": "1",
+                    "type": "text"
+                  },
+                  {
+                    "key": "originalname",
+                    "value": "document.pdf",
+                    "type": "text"
+                  },
+                  {
+                    "key": "model",
+                    "value": "gpt-4",
+                    "type": "text"
+                  },
+                  {
+                    "key": "uri",
+                    "value": "bolt://localhost:7687",
+                    "type": "text"
+                  },
+                  {
+                    "key": "userName",
+                    "value": "neo4j",
+                    "type": "text"
+                  },
+                  {
+                    "key": "password",
+                    "value": "neo4j_admin",
+                    "type": "text"
+                  },
+                  {
+                    "key": "database",
+                    "value": "neo4j",
+                    "type": "text"
+                  },
+                  {
+                    "key": "email",
+                    "value": "user@example.com",
+                    "type": "text"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Extract",
             "request": {
               "method": "POST",
               "header": [
@@ -150,18 +159,23 @@
                 }
               ],
               "url": {
-                "raw": "{{base_url}}/sources_list",
+                "raw": "{{base_url}}/extract",
                 "host": ["{{base_url}}"],
-                "path": ["sources_list"]
+                "path": ["extract"]
               },
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\"\n}"
+                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"model\": \"gpt-4\",\n  \"database\": \"neo4j\",\n  \"source_url\": \"https://example.com/document.pdf\",\n  \"file_name\": \"document.pdf\",\n  \"allowedNodes\": [\"Person\", \"Organization\", \"Location\"],\n  \"allowedRelationship\": [\"WORKS_FOR\", \"LOCATED_IN\"],\n  \"token_chunk_size\": 1000,\n  \"chunk_overlap\": 200,\n  \"chunks_to_combine\": 3,\n  \"language\": \"en\",\n  \"email\": \"user@example.com\"\n}"
               }
             }
-          },
+          }
+        ]
+      },
+      {
+        "name": "Graph Management",
+        "item": [
           {
-            "name": "Get Labels and Relation Types",
+            "name": "Schema",
             "request": {
               "method": "POST",
               "header": [
@@ -177,54 +191,12 @@
               },
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\"\n}"
+                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"email\": \"user@example.com\"\n}"
               }
             }
           },
           {
-            "name": "Update Graph",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/update",
-                "host": ["{{base_url}}"],
-                "path": ["update"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\"\n}"
-              }
-            }
-          },
-          {
-            "name": "Get Chunk Text",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/fetch_chunktext",
-                "host": ["{{base_url}}"],
-                "path": ["fetch_chunktext"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"document_name\": \"Annual_Report_2023.pdf\",\n  \"page_no\": 1\n}"
-              }
-            }
-          },
-          {
-            "name": "Get Schema Visualization",
+            "name": "Schema Visualization",
             "request": {
               "method": "POST",
               "header": [
@@ -247,364 +219,13 @@
         ]
       },
       {
-        "name": "Job Management",
-        "item": [
-          {
-            "name": "Cancel Job",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/cancel",
-                "host": ["{{base_url}}"],
-                "path": ["cancel"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"filenames\": [\"Annual_Report_2023.pdf\", \"Q4_Financial_Report.pdf\"],\n  \"source_types\": [\"local\", \"s3\"],\n  \"merged_dir\": \"/data/merged_documents\"\n}"
-              }
-            }
-          },
-          {
-            "name": "Get Document Status",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/document_status/{{file_name}}?url={{neo4j_uri}}&userName={{neo4j_user}}&password={{neo4j_password}}&database=neo4j",
-                "host": ["{{base_url}}"],
-                "path": ["document_status", "{{file_name}}"],
-                "query": [
-                  {
-                    "key": "url",
-                    "value": "{{neo4j_uri}}"
-                  },
-                  {
-                    "key": "userName",
-                    "value": "{{neo4j_user}}"
-                  },
-                  {
-                    "key": "password",
-                    "value": "{{neo4j_password}}"
-                  },
-                  {
-                    "key": "database",
-                    "value": "neo4j"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Update Extract Status",
-            "request": {
-              "method": "GET",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/update_extract_status/{{file_name}}?uri={{neo4j_uri}}&userName={{neo4j_user}}&password={{neo4j_password}}&database=neo4j",
-                "host": ["{{base_url}}"],
-                "path": ["update_extract_status", "{{file_name}}"],
-                "query": [
-                  {
-                    "key": "uri",
-                    "value": "{{neo4j_uri}}"
-                  },
-                  {
-                    "key": "userName",
-                    "value": "{{neo4j_user}}"
-                  },
-                  {
-                    "key": "password",
-                    "value": "{{neo4j_password}}"
-                  },
-                  {
-                    "key": "database",
-                    "value": "neo4j"
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      },
-      {
-        "name": "QA Operations",
-        "item": [
-          {
-            "name": "Chat Bot",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/x-www-form-urlencoded"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/chat_bot",
-                "host": ["{{base_url}}"],
-                "path": ["chat_bot"]
-              },
-              "body": {
-                "mode": "urlencoded",
-                "urlencoded": [
-                  {
-                    "key": "uri",
-                    "value": "{{neo4j_uri}}",
-                    "type": "text"
-                  },
-                  {
-                    "key": "userName",
-                    "value": "{{neo4j_user}}",
-                    "type": "text"
-                  },
-                  {
-                    "key": "password",
-                    "value": "{{neo4j_password}}",
-                    "type": "text"
-                  },
-                  {
-                    "key": "database",
-                    "value": "neo4j",
-                    "type": "text"
-                  },
-                  {
-                    "key": "model",
-                    "value": "openai-gpt-4o",
-                    "type": "text"
-                  },
-                  {
-                    "key": "question",
-                    "value": "What are the key relationships between companies and their employees in the documents?",
-                    "type": "text"
-                  },
-                  {
-                    "key": "document_names",
-                    "value": "[]",
-                    "type": "text"
-                  },
-                  {
-                    "key": "session_id",
-                    "value": "chat_session_123",
-                    "type": "text"
-                  },
-                  {
-                    "key": "mode",
-                    "value": "vector",
-                    "type": "text"
-                  },
-                  {
-                    "key": "email",
-                    "value": "user@example.com",
-                    "type": "text"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Clear Chat Bot",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/clear_chat_bot",
-                "host": ["{{base_url}}"],
-                "path": ["clear_chat_bot"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"session_id\": \"chat_session_2024_001\"\n}"
-              }
-            }
-          },
-          {
-            "name": "Calculate Metrics",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/metric",
-                "host": ["{{base_url}}"],
-                "path": ["metric"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"question\": \"What were the revenue trends in 2023?\",\n  \"context\": [\n    \"Q4 revenue increased by 15% year-over-year\",\n    \"Annual revenue reached $1.2B\"\n  ],\n  \"answer\": [\n    \"The company's revenue grew by 15% in Q4 compared to the previous year\",\n    \"Total annual revenue for 2023 was $1.2 billion\"\n  ],\n  \"model\": \"gpt-4\",\n  \"mode\": [\"graph\", \"text\"]\n}"
-              }
-            }
-          },
-          {
-            "name": "Calculate Additional Metrics",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/additional_metrics",
-                "host": ["{{base_url}}"],
-                "path": ["additional_metrics"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"question\": \"Compare the revenue growth between Q3 and Q4 2023\",\n  \"context\": [\n    \"Q3 revenue: $280M\",\n    \"Q4 revenue: $320M\"\n  ],\n  \"answer\": [\n    \"Revenue increased from $280M in Q3 to $320M in Q4\",\n    \"This represents a 14.3% quarter-over-quarter growth\"\n  ],\n  \"reference\": \"Financial reports show Q3 revenue of $280M and Q4 revenue of $320M\",\n  \"model\": \"gpt-4\",\n  \"mode\": [\"graph\", \"text\"]\n}"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "name": "Graph Maintenance",
-        "item": [
-          {
-            "name": "Get Unconnected Nodes List",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/get_unconnected_nodes_list",
-                "host": ["{{base_url}}"],
-                "path": ["get_unconnected_nodes_list"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\"\n}"
-              }
-            }
-          },
-          {
-            "name": "Delete Unconnected Nodes",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/delete_unconnected_nodes",
-                "host": ["{{base_url}}"],
-                "path": ["delete_unconnected_nodes"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"unconnected_entities_list\": [\"John Smith\", \"Acme Corp\", \"New York Office\"]\n}"
-              }
-            }
-          },
-          {
-            "name": "Get Duplicate Nodes",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/get_duplicate_nodes",
-                "host": ["{{base_url}}"],
-                "path": ["get_duplicate_nodes"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\"\n}"
-              }
-            }
-          },
-          {
-            "name": "Merge Duplicate Nodes",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/merge_duplicate_nodes",
-                "host": ["{{base_url}}"],
-                "path": ["merge_duplicate_nodes"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"duplicate_nodes_list\": [\"John Smith\", \"J. Smith\", \"Johnny Smith\"]\n}"
-              }
-            }
-          },
-          {
-            "name": "Drop Create Vector Index",
-            "request": {
-              "method": "POST",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "url": {
-                "raw": "{{base_url}}/drop_create_vector_index",
-                "host": ["{{base_url}}"],
-                "path": ["drop_create_vector_index"]
-              },
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\",\n  \"isVectorIndexExist\": true\n}"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "name": "System Operations",
+        "name": "Utility APIs",
         "item": [
           {
             "name": "Health Check",
             "request": {
               "method": "GET",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
+              "header": [],
               "url": {
                 "raw": "{{base_url}}/health",
                 "host": ["{{base_url}}"],
@@ -626,6 +247,40 @@
                 "raw": "{{base_url}}/backend_connection_configuration",
                 "host": ["{{base_url}}"],
                 "path": ["backend_connection_configuration"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"uri\": \"bolt://localhost:7687\",\n  \"userName\": \"neo4j\",\n  \"password\": \"neo4j_admin\",\n  \"database\": \"neo4j\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Document Status",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/document_status/document.pdf?url=bolt://localhost:7687&userName=neo4j&password=neo4j_admin&database=neo4j",
+                "host": ["{{base_url}}"],
+                "path": ["document_status", "document.pdf"],
+                "query": [
+                  {
+                    "key": "url",
+                    "value": "bolt://localhost:7687"
+                  },
+                  {
+                    "key": "userName",
+                    "value": "neo4j"
+                  },
+                  {
+                    "key": "password",
+                    "value": "neo4j_admin"
+                  },
+                  {
+                    "key": "database",
+                    "value": "neo4j"
+                  }
+                ]
               }
             }
           }
@@ -635,28 +290,7 @@
     "variable": [
       {
         "key": "base_url",
-        "value": "http://localhost:8000",
-        "type": "string"
-      },
-      {
-        "key": "neo4j_uri",
-        "value": "bolt://localhost:7687",
-        "type": "string"
-      },
-      {
-        "key": "neo4j_user",
-        "value": "neo4j",
-        "type": "string"
-      },
-      {
-        "key": "neo4j_password",
-        "value": "neo4j_admin",
-        "type": "string"
-      },
-      {
-        "key": "file_name",
-        "value": "Annual_Report_2023.pdf",
-        "type": "string"
+        "value": "http://localhost:8000"
       }
     ]
   }
