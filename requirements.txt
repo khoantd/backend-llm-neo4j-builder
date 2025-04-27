@@ -1,6 +1,6 @@
 asyncio==3.4.3
-boto3==1.36.2
-botocore==1.36.2
+boto3
+botocore
 certifi==2024.8.30
 fastapi==0.115.6
 fastapi-health==0.4.0
@@ -43,7 +43,7 @@ unstructured[all-docs]
 unstructured==0.16.11
 unstructured-client==0.28.1
 unstructured-inference==0.8.1
-urllib3==2.2.2
+urllib3
 uvicorn==0.32.1
 gunicorn==23.0.0
 wikipedia==1.4.0
@@ -61,3 +61,4 @@ rouge_score==0.1.2
 langchain-neo4j==0.3.0
 pypandoc-binary==1.15
 chardet==5.2.0
+fastapi-health==0.4.0

@@ -1,0 +1,64 @@
+# Version control
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.env
+*.env
+
+# Testing
+test_*.py
+*_test.py
+Performance_test.py
+locustperf.py
+dbtest.py
+
+# Documentation
+README.md
+code_structure.md
+*.md
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Development tools
+postman_collection.json
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+
+# Large files
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+
+# Cache directories
+.cache/
+.pytest_cache/
+.mypy_cache/
+
+# System files
+.DS_Store
+Thumbs.db 
